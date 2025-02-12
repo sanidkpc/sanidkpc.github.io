@@ -9,10 +9,10 @@
   <body>
     <header>
       <nav>
-        <ul>
-          <li><a href="/home">Home</a></li>
-          <li><a href="/about">About</a></li>
-          <li><a href="/blog">Blog</a></li>
+        <ul class="route">
+          <li><a data-template-id="home" href="/home">Home</a></li>
+          <li><a data-template-id="about" href="/about">About</a></li>
+          <li><a data-template-id="blog" href="/blog">Blog</a></li>
         </ul>
       </nav>
     </header>
@@ -30,38 +30,33 @@
     </template>
 
     <script>
-      const routes = [
-        { path: "home", templateId: "home" },
-        { path: "about", templateId: "about" },
-        { path: "blog", templateId: "blog" },
-        { path: "projects", templateId: "projects" },
-        { path: "podcasts", templateId: "podcasts" },
-        { path: "books", templateId: "books" },
-      ];
-
-      // Function to load the correct route
       function loadRoute(path) {
-        const route = routes.find((r) => r.path === path) || routes[0];
-        document.getElementById("content").innerHTML = document.getElementById(
-          route.templateId
-        ).innerHTML;
+        const route = document.querySelector(`a[href="${path}"]`);
+        const templateId = route
+          ? route.getAttribute("data-template-id")
+          : null;
+
+        if (templateId) {
+          document.getElementById("content").innerHTML =
+            document.getElementById(templateId).innerHTML;
+        } else {
+          loadRoute("/");
+        }
       }
 
-      // Handle internal link clicks to update history and load the route dynamically
       document.addEventListener("click", (e) => {
         const link = e.target.closest("a[href^='/']");
         if (!link) return;
 
         e.preventDefault();
-        history.pushState({}, "", link.pathname); // Update the URL
-        loadRoute(link.pathname.slice(1) || "home"); // Load the route
+        history.pushState({}, "", link.pathname);
+        loadRoute(link.pathname);
       });
 
-      // Handle browser back and forward buttons (popstate)
-      window.onpopstate = () => loadRoute(location.pathname.slice(1) || "home");
+      window.onpopstate = () => loadRoute(location.pathname);
 
-      // Initial route loading based on the current URL
-      loadRoute(location.pathname.slice(1) || "home");
+      const firstLink = document.querySelector("ul.route a");
+      loadRoute(firstLink ? firstLink.getAttribute("href") : "/");
     </script>
   </body>
 </html>
