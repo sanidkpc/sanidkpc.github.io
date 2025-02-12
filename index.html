@@ -62,12 +62,6 @@
 
       // Initial route loading based on the current URL
       loadRoute(location.pathname.slice(1) || "home");
-
-      // Ensure that the app handles refreshes correctly by using the history API
-      if (location.pathname !== "/") {
-        history.replaceState({}, "", "/");
-      }
-      console.log("sanid 2");
     </script>
   </body>
 </html>
