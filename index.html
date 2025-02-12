@@ -13,6 +13,7 @@
           <li><a data-template-id="home" href="/">Home</a></li>
           <li><a data-template-id="about" href="/about">About</a></li>
           <li><a data-template-id="blog" href="/blog">Blog</a></li>
+          <li><a data-template-id="contact" href="/contact">Contact</a></li>
         </ul>
       </nav>
     </header>
@@ -28,46 +29,13 @@
     <template id="blog">
       <h1>Blog</h1>
     </template>
+    <template id="contact">
+      <h1>Contact</h1>
+    </template>
 
+    <script src="router.js"></script>
     <script>
-      function loadRoute(path) {
-        const route = document.querySelector(`a[href="${path}"]`);
-        const templateId = route
-          ? route.getAttribute("data-template-id")
-          : null;
-
-        if (templateId) {
-          document.getElementById("content").innerHTML =
-            document.getElementById(templateId).innerHTML;
-        } else {
-          // Default to home if the route is not found
-          loadRoute("/");
-        }
-      }
-
-      document.addEventListener("click", (e) => {
-        const link = e.target.closest("a[href^='/']");
-        if (!link) return;
-
-        e.preventDefault();
-        history.pushState({}, "", link.pathname);
-        loadRoute(link.pathname);
-      });
-
-      window.onpopstate = () => loadRoute(location.pathname);
-
-      // Handle the initial load
-      const urlParams = new URLSearchParams(window.location.search);
-      const routeParam = urlParams.get("route");
-
-      if (routeParam) {
-        // If a route parameter exists, load the corresponding content
-        history.replaceState({}, "", routeParam);
-        loadRoute(routeParam);
-      } else {
-        // Otherwise, load the default route
-        loadRoute(location.pathname);
-      }
+      const router = new Router();
     </script>
   </body>
 </html>
