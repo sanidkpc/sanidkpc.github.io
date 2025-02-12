@@ -40,6 +40,7 @@
           document.getElementById("content").innerHTML =
             document.getElementById(templateId).innerHTML;
         } else {
+          // Default to home if the route is not found
           loadRoute("/");
         }
       }
@@ -55,8 +56,8 @@
 
       window.onpopstate = () => loadRoute(location.pathname);
 
-      const firstLink = document.querySelector("ul.route a");
-      loadRoute(firstLink ? firstLink.getAttribute("href") : "/");
+      // Load the initial route based on the current URL
+      loadRoute(location.pathname);
     </script>
   </body>
 </html>
