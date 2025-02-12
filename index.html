@@ -39,6 +39,7 @@
         { path: "books", templateId: "books" },
       ];
 
+      // Function to load the correct route
       function loadRoute(path) {
         const route = routes.find((r) => r.path === path) || routes[0];
         document.getElementById("content").innerHTML = document.getElementById(
@@ -46,18 +47,27 @@
         ).innerHTML;
       }
 
+      // Handle internal link clicks to update history and load the route dynamically
       document.addEventListener("click", (e) => {
         const link = e.target.closest("a[href^='/']");
         if (!link) return;
 
         e.preventDefault();
-        history.pushState({}, "", link.pathname);
-        loadRoute(link.pathname.slice(1) || "home");
+        history.pushState({}, "", link.pathname); // Update the URL
+        loadRoute(link.pathname.slice(1) || "home"); // Load the route
       });
 
+      // Handle browser back and forward buttons (popstate)
       window.onpopstate = () => loadRoute(location.pathname.slice(1) || "home");
 
+      // Initial route loading based on the current URL
       loadRoute(location.pathname.slice(1) || "home");
+
+      // Ensure that the app handles refreshes correctly by using the history API
+      if (location.pathname !== "/") {
+        history.replaceState({}, "", "/");
+      }
+      console.log("sanid 2");
     </script>
   </body>
 </html>
