@@ -56,8 +56,18 @@
 
       window.onpopstate = () => loadRoute(location.pathname);
 
-      // Load the initial route based on the current URL
-      loadRoute(location.pathname);
+      // Handle the initial load
+      const urlParams = new URLSearchParams(window.location.search);
+      const routeParam = urlParams.get("route");
+
+      if (routeParam) {
+        // If a route parameter exists, load the corresponding content
+        history.replaceState({}, "", routeParam);
+        loadRoute(routeParam);
+      } else {
+        // Otherwise, load the default route
+        loadRoute(location.pathname);
+      }
     </script>
   </body>
 </html>
